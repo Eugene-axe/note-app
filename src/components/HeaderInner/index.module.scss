@@ -1,0 +1,16 @@
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 2em;
+  justify-content: flex-start;
+
+  color: white;
+  :global(.ant-typography) {
+    color: white;
+  }
+  :global(.ant-btn) {
+    font-size: 1.2em;
+  }
+}
