@@ -75,7 +75,7 @@ export const HTMLtoState = convertFromHTML<DOMStringMap>({
   htmlToStyle: (nodeName, node, currentStyle) => {
     const name = nodeName as keyof typeof nodeNameMap;
     if (!!nodeNameMap[name]) return currentStyle;
-    if (nodeName === "span" && typeof nodeNameMap[nodeName]) {
+    if (nodeName === "span") {
       for (const key in nodeNameMap.span) {
         if (node.classList.contains(key))
           return currentStyle.add(nodeNameMap.span[key]);

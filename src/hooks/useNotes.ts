@@ -22,29 +22,21 @@ export const useNotes = () => {
       title: "Новая заметка",
       description: "",
     };
-    const newNoteArray = [...notes, newNote];
-    setNotes(newNoteArray);
+    setNotes((notes) => [...notes, newNote]);
     setCurrentNote(newNote);
-  }, [notes]);
+  }, []);
 
-  const deleteNote = useCallback(
-    (deleteNote: TNote) => {
-      setNotes(notes.filter((note) => note.id !== deleteNote.id));
-      setCurrentNote(undefined);
-    },
-    [notes]
-  );
+  const deleteNote = useCallback((deleteNote: TNote) => {
+    setNotes((notes) => notes.filter((note) => note.id !== deleteNote.id));
+    setCurrentNote(undefined);
+  }, []);
 
   const saveEditedNote = useCallback(
-    (editedNote: TNote) => {
-      const notesArray = [...notes];
-      const noteIndex = notesArray.findIndex((note) => {
-        return note.id === editedNote.id;
-      });
-      notesArray[noteIndex] = editedNote;
-      setNotes(notesArray);
-    },
-    [notes]
+    (editedNote: TNote) =>
+      setNotes((notes) =>
+        notes.map((note) => (note.id !== editedNote.id ? note : editedNote))
+      ),
+    []
   );
 
   useEffect(() => {
@@ -60,7 +52,7 @@ export const useNotes = () => {
     if (notes.length) {
       saveToStorage(notes);
     }
-  }, [deleteNote, addNote, saveEditedNote]);
+  }, [deleteNote, addNote, saveEditedNote, notes]);
 
   return useMemo(
     () => ({
