@@ -39,20 +39,12 @@ const stateToHTMLMap: Record<EInlineStyle, JSX.Element> = {
 };
 
 export const stateToHTML = convertToHTML<EInlineStyle>({
-  styleToHTML: (style) => {
-    const styleTitle = style as EInlineStyle;
-    if (!stateToHTMLMap[styleTitle]) return null;
-    return stateToHTMLMap[styleTitle];
-  },
+  styleToHTML: (style) =>
+    stateToHTMLMap[style] ? stateToHTMLMap[style] : null,
 });
 
-type TSpan = { [key: string]: EInlineStyle };
-type TNodeNameMap = {
-  strong: EInlineStyle;
-  i: EInlineStyle;
-  u: EInlineStyle;
-  span: TSpan;
-};
+type TNodeNameMapItem = Record<string, EInlineStyle>;
+type TNodeNameMap = Record<string, EInlineStyle | TNodeNameMapItem>;
 
 const nodeNameMap: TNodeNameMap = {
   strong: EInlineStyle.BOLD,
@@ -73,15 +65,15 @@ const nodeNameMap: TNodeNameMap = {
 
 export const HTMLtoState = convertFromHTML<DOMStringMap>({
   htmlToStyle: (nodeName, node, currentStyle) => {
-    const name = nodeName as keyof typeof nodeNameMap;
-    if (!!nodeNameMap[name]) return currentStyle;
-    if (nodeName === "span") {
-      for (const key in nodeNameMap.span) {
+    const nodeItem = nodeNameMap[nodeName];
+
+    if (!nodeItem) return currentStyle;
+    if (typeof nodeItem === "object") {
+      for (const key in nodeItem) {
         if (node.classList.contains(key))
-          return currentStyle.add(nodeNameMap.span[key]);
+          return currentStyle.add(nodeItem[key]);
       }
     }
-    const styleName = nodeNameMap[name] as string;
-    return currentStyle.add(styleName);
+    return currentStyle.add(nodeNameMap[nodeName] as string);
   },
 });
