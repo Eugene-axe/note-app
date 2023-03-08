@@ -21,10 +21,8 @@ export const NoteDescription = () => {
   return (
     <div className={styles.wrapper}>
       <Row align="bottom" gutter={[16, 16]}>
-        <Col>
+        <Col className={styles.header}>
           <Title level={3}>Подробнее:</Title>
-        </Col>
-        <Col>
           <Title level={4} editable={{ onChange: setEditableTitle }}>
             {editableTitle}
           </Title>

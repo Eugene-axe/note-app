@@ -22,5 +22,8 @@ export const theme: ThemeConfig = {
       sizeMarginHeadingVerticalStart: 0,
       sizeMarginHeadingVerticalEnd: 0,
     },
+    Tooltip: {
+      colorBgDefault: "#021f45",
+    },
   },
 };
